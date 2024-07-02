@@ -1,16 +1,17 @@
 "use server";
 
 import { z } from "zod";
-import { SignUpformSchema } from "../account/signup/page";
+// import { SignUpformSchema } from "../account/signup/page";
 import * as argon2 from "argon2";
 import { generateId } from "lucia";
 
 import { userTable } from "@/lib/schema";
 import { lucia, validataRequest } from "@/lib/auth";
 import { cookies } from "next/headers";
-import { SignInformSchema } from "../account/signin/page";
+// import { SignInformSchema } from "../account/signin/page";
 import { eq } from "drizzle-orm";
 import db from "@/lib";
+import { SignInformSchema, SignUpformSchema } from "@/types";
 
 export const signup = async (values: z.infer<typeof SignUpformSchema>) => {
   console.log(values);
@@ -107,8 +108,6 @@ export const signin = async (values: z.infer<typeof SignInformSchema>) => {
     console.error(error)
   }
 
-
- 
 };
 
 export const signout = async () => {
