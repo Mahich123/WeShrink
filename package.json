@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+     "vercel-build": "npm rebuild argon2 --build-from-source"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.6.0",
