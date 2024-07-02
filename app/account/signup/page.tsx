@@ -19,30 +19,14 @@ import { signup } from "../../actions/auth.actions";
 import { toast } from "@/components/ui/use-toast";
 import { PartyPopper } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { SignUpformSchema } from "@/types";
 
-export const formSchema = z
-  .object({
-    username: z.string().min(2, {
-      message: "Username must be at least 2 characters.",
-    }),
-    email: z.string().email().min(5),
-    password: z
-      .string()
-      .min(8, { message: "Password must be at least 8 characters long" }),
-    confirmPassword: z
-      .string()
-      .min(8, { message: "Password must be at least 8 characters long" }),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Password did not matched",
-    path: ["confirmPassword"],
-  });
 
 export default function UserAccount() {
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof SignUpformSchema>>({
+    resolver: zodResolver(SignUpformSchema),
     defaultValues: {
       username: "",
       email: "",
@@ -51,7 +35,7 @@ export default function UserAccount() {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof SignUpformSchema>) {
     const res = await signup(values);
 
     if (!res?.success) {

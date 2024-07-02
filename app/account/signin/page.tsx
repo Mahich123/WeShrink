@@ -19,13 +19,9 @@ import { signin, signup } from "../../actions/auth.actions";
 import { toast } from "@/components/ui/use-toast";
 import { PartyPopper } from "lucide-react";
 import { redirect, useRouter } from "next/navigation";
+import { SignInformSchema } from "@/types";
 
-export const SignInformSchema = z.object({
-  email: z.string().email().min(5),
-  password: z
-    .string()
-    .min(8, { message: "Password must be at least 8 characters long" }),
-});
+
 
 export default function UserAccount() {
   const router = useRouter();

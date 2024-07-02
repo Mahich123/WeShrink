@@ -1,7 +1,7 @@
 "use server";
 
 import { z } from "zod";
-import { formSchema } from "../account/signup/page";
+import { SignUpformSchema } from "../account/signup/page";
 import * as argon2 from "argon2";
 import { generateId } from "lucia";
 
@@ -12,7 +12,7 @@ import { SignInformSchema } from "../account/signin/page";
 import { eq } from "drizzle-orm";
 import db from "@/lib";
 
-export const signup = async (values: z.infer<typeof formSchema>) => {
+export const signup = async (values: z.infer<typeof SignUpformSchema>) => {
   console.log(values);
 
   const hashedPassword = await argon2.hash(values.password);
