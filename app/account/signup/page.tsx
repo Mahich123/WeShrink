@@ -40,7 +40,7 @@ export default function UserAccount() {
 
     if (!res?.success) {
       const errorMessage =
-        res?.data?.error ||
+        res?.success ||
         "Duplicate entry or you may already have an account";
       toast({
         variant: "destructive",

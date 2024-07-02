@@ -39,7 +39,7 @@ export default function UserAccount() {
 
     if (!res?.success) {
       const errorMessage =
-        res?.data?.error ||
+       res?.message ||
         "You'r email or password may be wrong check again";
       toast({
         variant: "destructive",
