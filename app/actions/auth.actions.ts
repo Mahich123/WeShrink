@@ -14,7 +14,7 @@ import db from "@/lib";
 import { SignInformSchema, SignUpformSchema } from "@/types";
 
 export const signup = async (values: z.infer<typeof SignUpformSchema>) => {
-  console.log(values);
+  // console.log(values);
 
   const hashedPassword = await argon2.hash(values.password);
   //   console.log(hashedPassword)
@@ -34,7 +34,7 @@ export const signup = async (values: z.infer<typeof SignUpformSchema>) => {
         id: userTable.id,
         username: userTable.username,
       });
-    console.log("res:", res);
+    // console.log("res:", res);
 
     const session = lucia.createSession(userId, {
       expiresIn: 60 * 60 * 24 * 30,

@@ -40,11 +40,16 @@ export default function UserAccount() {
 
     if (!res?.success) {
       const errorMessage =
-        res?.data ||
+        res?.data.userId ||
         "Duplicate entry or you may already have an account";
       toast({
         variant: "destructive",
-        description: errorMessage,
+        description: (
+          <div className="flex items-center">
+            <PartyPopper size={24} />
+            <p>{errorMessage}</p>
+          </div>
+        ),
       });
     } else if (res?.success) {
       toast({
