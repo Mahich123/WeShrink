@@ -46,7 +46,6 @@ export default function UserAccount() {
         variant: "destructive",
         description: (
           <div className="flex items-center">
-            <PartyPopper size={24} />
             <p>{errorMessage}</p>
           </div>
         ),

@@ -3,12 +3,18 @@ import { Button } from "./ui/button";
 import Link from "next/link";
 import { Github } from "lucide-react";
 import { validataRequest } from "@/lib/auth";
-import { signout } from "@/app/actions/auth.actions";
+import { getUser,  signout } from "@/app/actions/auth.actions";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { Badge } from "./ui/badge";
 
 const Header = async () => {
-    const {user} = await validataRequest()
+  const { user } = await validataRequest();
 
-  
+  const userId = user?.id;
+
+  const currentUser = userId ? await getUser(userId) : null;
+
+ 
   return (
     <div className="max-w-[988px] mx-auto sticky top-0 backdrop-blur-md px-6 sm:px-2 h-[12vh] rounded-md bg-white/30 ">
       <div className="w-full h-0.5 mt-3 bg-gray-700 animate-expand"></div>
@@ -31,20 +37,33 @@ const Header = async () => {
           <div className="absolute  top-[65px] left-[70%]  w-[48px] h-[10px] bg-[#5A5959] border rounded-[50%]"></div>
         </div>
 
-        {
-            !user? (
-                <Link href={"/account/signup"}>
-                    <Button>Get Access</Button>
-                </Link>
-            ) : (
+        {!user ? (
+          <Link href={"/account/signup"}>
+            <Button>Get Access</Button>
+          </Link>
+        ) : (
+          <div className="flex items-center">
+            <Badge variant={currentUser?.role == 'admin' ? 'admin' : 'user'}>{currentUser?.role}</Badge>
+            <Popover>
+              <PopoverTrigger>
+                <div className="bg-gray-400 size-10 rounded-full mr-2 flex items-center justify-center text-white uppercase">
+                  {currentUser?.username?.charAt(0)}
+                </div>
+              </PopoverTrigger>
+              <PopoverContent>
+                <h3 className="uppercase font-semibold">
+                  {currentUser?.username}
+                </h3>
+                <h2 className="my-2">{currentUser?.email}</h2>
                 <form action={signout}>
-                    <Button type="submit">Sign out</Button>
+                  <Button size={"sm"} variant={"outline"} type="submit">
+                    Sign out
+                  </Button>
                 </form>
-                
-            )
-        }
-        
-        
+              </PopoverContent>
+            </Popover>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -14,7 +14,9 @@ import {
 } from "./ui/form";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-
+import { createLink } from "@/app/actions/auth.actions";
+import { useUserContext } from "@/lib/UserContext";
+import { genShortLink } from "@/lib/shortCode";
 
 const formSchema = z.object({
   Link: z.string().url(),
@@ -22,6 +24,7 @@ const formSchema = z.object({
 });
 
 export const UserForm = () => {
+  const user = useUserContext();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -32,12 +35,52 @@ export const UserForm = () => {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    const shortCode = await genShortLink();
+    console.log(shortCode);
+
+    const shortenedUrl = `${document.location.protocol}//${document.location.host}/${shortCode}`;
+
+    console.log(shortenedUrl);
+
+    const username = user?.username ?? "Guest";
     
+    const email = user?.email ?? "not-provided";
+
+    const formData = {
+      name: values.name,
+      longurl: values.Link,
+      user: username,
+      email:email,
+      shortCode,
+      shortenedUrl,
+      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+    };
+
+    const res = await createLink(formData);
+
+    // console.log(res)
+
+    if (res) {
+      form.reset()
+      return {
+        success: true,
+        message: "Link successfully created",
+        
+      };
+      
+    } else {
+      return {
+        success: false,
+        message: "Error creating link",
+      }
+    }
+
+  
   }
 
   return (
     <>
-      <div className="lg:w-[20vw]">
+      <div className="">
         <Form {...form}>
           <form
             className="max-w-md w-full"
@@ -82,8 +125,6 @@ export const UserForm = () => {
           </form>
         </Form>
       </div>
-
-    
     </>
   );
 };
