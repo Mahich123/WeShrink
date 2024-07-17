@@ -9,7 +9,6 @@ export const GET = async () => {
   try {
     const { user, session } = await validataRequest();
 
-    // console.log("the user", user)
 
     if (!user || !session) {
       return NextResponse.json({ user: null }, { status: 200 });

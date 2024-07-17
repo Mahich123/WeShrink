@@ -105,7 +105,7 @@ export const signin = async (values: z.infer<typeof SignInformSchema>) => {
     );
 
     window.location.reload();
-    
+
     return {
       success: true,
       message: "Logged in successfully",
@@ -176,13 +176,11 @@ type linkData = {
   name: string;
   longurl: string;
   user: string;
-  email:string;
+  email: string;
   shortCode: string;
   shortenedUrl: string;
   expiresAt: Date;
 };
-
-
 
 export const createLink = async ({
   name,
@@ -224,5 +222,28 @@ export const createLink = async ({
       success: false,
       message: "Error creating link",
     };
+  }
+};
+
+type UserId = {
+  id: string;
+};
+
+export const showData = async (user: UserId) => {
+  try {
+    const data = await db.select().from(urls).where(eq(urls.user, user?.id))
+    
+    return {
+      success: true,
+      data: data
+    };
+  
+  } catch (error) {
+    console.error(error)
+
+    return {
+      success: false,
+      message: "user data not found"
+    }
   }
 };
